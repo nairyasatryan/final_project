@@ -66,6 +66,8 @@ const Icon = styled.div`
   }
  
 `;
+const Title = styled.h4`
+`
 const Product = ({ item }) => {
   return (
     <Container>
@@ -81,6 +83,7 @@ const Product = ({ item }) => {
         <Icon>
           <FavoriteBorderOutlined />
         </Icon>
+      
       </Info>
     </Container>
   );
