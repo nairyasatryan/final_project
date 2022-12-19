@@ -1,21 +1,21 @@
 import React from "react";
-import Annoucement from "../components/Annoucement";
+import Announcement from "../components/Announcement";
 import Categories from "../components/Categories";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import News_letter from "../components/News_letter";
+import Navbar from "../components/Navbar";
+import Newsletter from "../components/Newsletter";
 import Products from "../components/Products";
 import Slider from "../components/Slider";
 
 const Home = () => {
   return (
     <div>
-      <Annoucement />
-      <NavBar />
+      <Announcement />
+      <Navbar />
       <Slider />
       <Categories />
-      <Products />
-      <News_letter />
+      <Products/>
+      <Newsletter/>
       <Footer/>
     </div>
   );

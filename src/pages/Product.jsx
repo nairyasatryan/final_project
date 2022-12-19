@@ -1,22 +1,28 @@
 import { Add, Remove } from "@material-ui/icons";
 import styled from "styled-components";
-import Annoucement from "../components/Annoucement";
+import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
-import News_letter from "../components/News_letter";
-import { bookNumber } from "../data";
+import Navbar from "../components/Navbar";
+import Newsletter from "../components/Newsletter";
 import { mobile } from "../responsive";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
+import { addProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+
 const Container = styled.div``;
 
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-  ${mobile({ padding: "10px", flexDirection:"column" })}
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
-const ImageContainer = styled.div`
+const ImgContainer = styled.div`
   flex: 1;
 `;
+
 const Image = styled.img`
   width: 100%;
   height: 90vh;
@@ -29,6 +35,7 @@ const InfoContainer = styled.div`
   padding: 0px 50px;
   ${mobile({ padding: "10px" })}
 `;
+
 const Title = styled.h1`
   font-weight: 200;
 `;
@@ -38,47 +45,58 @@ const Desc = styled.p`
 `;
 
 const Price = styled.span`
+  font-weight: 100;
   font-size: 40px;
 `;
+
 const FilterContainer = styled.div`
-  width: 80%;
+  width: 50%;
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
   ${mobile({ width: "100%" })}
 `;
+
 const Filter = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const FilterTitle = styled.span`
-  wont-weight: 200;
+  font-size: 20px;
+  font-weight: 200;
+`;
 
+const FilterColor = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+  margin: 0px 5px;
+  cursor: pointer;
 `;
-const FilterBook = styled.select`
-  padding: 5px;
-  margin-left: 10px;
-`;
-const FilterBookOption = styled.option``;
-const FilterCover = styled.select`
-  padding: 5px;
-  margin-left: 10px;
-`;
-const FilterCoverOption = styled.option``;
 
+const FilterSize = styled.select`
+  margin-left: 10px;
+  padding: 5px;
+`;
+
+const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
-  width: 80%;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  ${mobile({ width: "100%" })} 
+  ${mobile({ width: "100%" })}
 `;
+
 const AmountContainer = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
 `;
+
 const Amount = styled.span`
   width: 30px;
   height: 30px;
@@ -89,78 +107,89 @@ const Amount = styled.span`
   justify-content: center;
   margin: 0px 5px;
 `;
+
 const Button = styled.button`
   padding: 15px;
   border: 2px solid teal;
   background-color: white;
   cursor: pointer;
   font-weight: 500;
-  
-  &:hover{
+  &:hover {
     background-color: #f8f4f4;
   }
 `;
 
-
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get("/products/find/" + id);
+        setProduct(res.data);
+      } catch {}
+    };
+    getProduct();
+  }, [id]);
+
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+      quantity > 1 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleClick = () => {
+    dispatch(
+      addProduct({ ...product, quantity, color, size })
+    );
+  };
   return (
     <Container>
-      <Annoucement />
-      <NavBar />
+      <Navbar />
+      <Announcement />
       <Wrapper>
-        <ImageContainer>
-          <Image src="https://m.media-amazon.com/images/I/91M9VaZWxOL.jpg" />
-        </ImageContainer>
+        <ImgContainer>
+          <Image src={product.img} />
+        </ImgContainer>
         <InfoContainer>
-          <Title>Attack on Titans</Title>
-          <Desc>
-            Attack on Titan (Japanese: 進撃の巨人, Hepburn: Shingeki no Kyojin,
-            lit. 'The Attack Titan') is a Japanese manga series written and
-            illustrated by Hajime Isayama. It is set in a world where humanity
-            is forced to live in cities surrounded by three enormous walls that
-            protect them from gigantic man-eating humanoids referred to as
-            Titans; the story follows Eren Yeager, who vows to exterminate the
-            Titans after they bring about the destruction of his hometown and
-            the death of his mother. Attack on Titan was serialized in
-            Kodansha's monthly shōnen manga magazine Bessatsu Shōnen Magazine
-            from September 2009 to April 2021, with its chapters collected in 34
-            tankōbon volumes.
-          </Desc>
-          <Price> $ 20</Price>
+          <Title>{product.title}</Title>
+          <Desc>{product.desc}</Desc>
+          <Price>$ {product.price}</Price>
           <FilterContainer>
             <Filter>
-              <FilterTitle>Number of book</FilterTitle>
-              <FilterBook>
-                <FilterBookOption selected disabled>
-                  Number
-                </FilterBookOption>
-                {bookNumber.map((item, index) => (
-                  <FilterBookOption key={index}>{item.number}</FilterBookOption>
-                ))}
-              </FilterBook>
+              <FilterTitle>Color</FilterTitle>
+              {product.color?.map((c) => (
+                <FilterColor color={c} key={c} onClick={() => setColor(c)} />
+              ))}
             </Filter>
             <Filter>
-              <FilterTitle>Kind of cover</FilterTitle>
-              <FilterCover>
-                <FilterCoverOption selected disabled>
-                  Cover
-                </FilterCoverOption>
-                <FilterCoverOption>Tender</FilterCoverOption>
-                <FilterCoverOption>Tough</FilterCoverOption>
-              </FilterCover>
+              <FilterTitle>Size</FilterTitle>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
+                {product.size?.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
+              </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-                <Remove/>
-                <Amount>1</Amount>
-                <Add/>
+              <Remove onClick={() => handleQuantity("dec")} />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button>ADD TO CARD</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
-      <News_letter />
+      <Newsletter />
       <Footer />
     </Container>
   );

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {mobile} from "../responsive";
 
-
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -9,7 +8,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://hdwallpaperim.com/wp-content/uploads/2017/08/24/115020-Fate_Series-Fate-Stay_Night-Archer_Fate-Stay_Night.jpg")
+    url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
       center;
   background-size: cover;
   display: flex;

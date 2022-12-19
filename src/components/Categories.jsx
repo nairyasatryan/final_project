@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { categories } from "../data";
 import { mobile } from "../responsive";
-import Category_item from "./Category_item";
-
+import CategoryItem from "./CategoryItem";
 
 const Container = styled.div`
   display: flex;
@@ -11,13 +10,11 @@ const Container = styled.div`
   ${mobile({ padding: "0px", flexDirection:"column" })}
 `;
 
-
-
 const Categories = () => {
   return (
     <Container>
       {categories.map((item) => (
-        <Category_item item={item} key={item.id} />
+        <CategoryItem item={item} key={item.id} />
       ))}
     </Container>
   );
