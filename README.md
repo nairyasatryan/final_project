@@ -1,6 +1,6 @@
-#E-commerce website
+# E-commerce website
 
-##Desctription
+## Desctription
 
 E-commerce aplication for shopping site. Here's shopping site for any clothes you want.
 Its page for users, but website also has page for admin.
@@ -27,6 +27,6 @@ https://github.com/nairyasatryan/eccomerceapi.git
 
 
 ### Installing
->git clone https://github.com/nairyasatryan/final_project.git
->cd final_project/clinet
+>git clone https://github.com/nairyasatryan/final_project.git  
+>cd final_project/clinet  
 >npm install
