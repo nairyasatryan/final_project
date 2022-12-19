@@ -12,6 +12,7 @@ Its page for users, but website also has page for admin.
 - Styled Commponents
 - Stripe 
 - ReactJS
+- React-redux
 
 ## Features
  
