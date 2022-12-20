@@ -2,7 +2,7 @@
 
 ## Desctription
 
-E-commerce aplication for shopping site. Here's shopping site for any clothes you want.
+E-commerce application written with ReactJS and react-redux for shopping site. Here's shopping site for any clothes you want.
 Its page for users, but website also has page for admin.
 
 
