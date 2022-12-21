@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { popularProducts } from "../data";
+
 import Product from "./Product";
 import axios from "axios";
+import { Container } from "./StyledCommponents/ProductsStyled";
 
-const Container = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-`;
+
 
 const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -30,7 +25,7 @@ const Products = ({ cat, filters, sort }) => {
       } catch (err) {}
     };
     getProducts();
-  }, [cat]);
+  }, [cat, products]);
 
   useEffect(() => {
     cat &&

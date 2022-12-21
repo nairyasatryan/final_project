@@ -1,7 +1,7 @@
 export const sliderItems = [
   {
     id: 1,
-    img: "https://i.ibb.co/XsdmR2c/1.png",
+    img: "https://previews.123rf.com/images/leszekczerwonka/leszekczerwonka1702/leszekczerwonka170200278/72575658-woman-summer-clothes-on-wooden-background.jpg",
     title: "SUMMER SALE",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: "f5fafd",
@@ -26,19 +26,19 @@ export const categories = [
   {
     id: 1,
     img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title: "SHIRT STYLE!",
+    title: "FOR WOMEN!",
     cat:"women"
   },
   {
     id: 2,
-    img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    title: "LOUNGEWEAR LOVE",
+    img: "https://media.istockphoto.com/id/1287722819/vector/watercolor-illustration-of-mens-casual-fashion-background.jpg?s=612x612&w=0&k=20&c=d3IaFH0eL6alfyvuDg07-AcoHRPxQDi7Rhd109ERR8k=",
+    title: "FOR MEN",
     cat:"men"
   },
   {
     id: 3,
-    img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-    title: "LIGHT JACKETS",
+    img: "https://img.freepik.com/free-vector/stylish-footwear-cartoon-vector-illustration-set-elegant-casual-shoes-seasonal-summer-sandals-autumn-boots-sneakers-collection-male-female-flat-high-heeled-shoes-fashion-concept_74855-20922.jpg?w=2000",
+    title: "SHOES",
     cat:"shoes"
   },
 ];

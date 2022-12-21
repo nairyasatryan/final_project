@@ -1,14 +1,15 @@
-import { Add, Remove } from "@material-ui/icons";
+
+import { DeleteForeverOutlined, MinimizeTwoTone } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
 import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { deleteProduct, resetCart } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
 
 const KEY = process.env.REACT_APP_STRIPE;
 
@@ -41,14 +42,7 @@ const TopButton = styled.button`
   color: ${(props) => props.type === "filled" && "white"};
 `;
 
-const TopTexts = styled.div`
-  ${mobile({ display: "none" })}
-`;
-const TopText = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-  margin: 0px 10px;
-`;
+
 
 const Bottom = styled.div`
   display: flex;
@@ -162,46 +156,49 @@ const Button = styled.button`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const [stripeToken, setStripeToken] = useState(null);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const onToken = (token) => {
+    console.log("onToken")
     setStripeToken(token);
+    dispatch(resetCart())
+  };
+
+  const handleClick = (id) => {
+    dispatch(
+      deleteProduct(id)
+    );
   };
 
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await userRequest.post("/checkout/payment", {
+        await userRequest.post("/checkout/payment", {
           tokenId: stripeToken.id,
-          amount: 500,
+          amount: cart.total * 100,
         });
-        navigate("/success", {
-          stripeData: res.data,
-          products: cart,
-        });
-      } catch {}
+      } catch { }
     };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.total]);
+    stripeToken && cart.total >= 1 && makeRequest();
+  }, [stripeToken, cart.total, navigate]);
+  
   return (
     <Container>
-      <Navbar />
-      <Announcement />
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
-          <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
-          </TopTexts>
+          <Link to={"/"} style={{ textDecoration: 'none' }}>
+            <TopButton >CONTINUE SHOPPING</TopButton>
+          </Link>
+          
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
             {cart.products.map((product) => (
-              <Product>
-                <ProductDetail>
+              <Product key={product._id}>
+                <ProductDetail >
                   <Image src={product.img} />
                   <Details>
                     <ProductName>
@@ -218,9 +215,12 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Add />
+                    <MinimizeTwoTone />
+                    {/* <Add /> */}
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
+                    {/* <Remove /> */}
+                    <MinimizeTwoTone />
+                    <DeleteForeverOutlined onClick={() => handleClick(product._id)} />
                   </ProductAmountContainer>
                   <ProductPrice>
                     $ {product.price * product.quantity}
@@ -238,34 +238,34 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
+              <SummaryItemPrice>$ 7.60</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
+              <SummaryItemPrice>$ -7.60</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <StripeCheckout
-              name="Lama Shop"
+              name="LAMA SHOP"
               image="https://avatars.githubusercontent.com/u/1486366?v=4"
               billingAddress
               shippingAddress
               description={`Your total is $${cart.total}`}
               amount={cart.total * 100}
               token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
+              stripeKey={KEY}    >
+              <Button >CHECKOUT NOW</Button>
             </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>
-      <Footer />
     </Container>
   );
 };
 
 export default Cart;
+
+
